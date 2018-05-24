@@ -1,0 +1,46 @@
+@import "../../../../assets/styles/common";
+:host::ng-deep {
+    .login-page .ant-form {
+        width: 80%;
+        margin: 40px auto;
+    }
+    .login-page .has-error {
+        font-size: 12px;
+    }
+}
+
+.login-page {
+    width: $Width;
+    height: $Height;
+    background: $comColor;
+    overflow: hidden;
+}
+
+.login-page .login-message {
+    width: 356px; // height: 356px;
+    margin: 150px auto;
+    .login-banner {
+        text-align: center;
+    }
+    .login-banner img {
+        width: 185px;
+        height: 50px;
+    }
+    .login-submit {
+        height: 300px;
+        border-radius: 5px;
+        background: $bgColor;
+        margin-top: 20px;
+        overflow: hidden;
+    }
+    .login-form-forgot {
+        float: left;
+    }
+    .login-forget-password {
+        float: right;
+        color: #cfdbed;
+    }
+    .login-form-button {
+        width: 100%;
+    }
+}

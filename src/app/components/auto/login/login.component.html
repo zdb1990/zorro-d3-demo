@@ -1,0 +1,52 @@
+<div class="login-page">
+    <div class="login-message">
+        <div class="login-banner">
+            <img src="../../../../assets/images/login.png">
+        </div>
+        <div class="login-submit">
+            <form nz-form [formGroup]="userdateForm" (ngSubmit)="submitForm()">
+                <nz-form-item>
+                    <nz-form-control>
+                        <nz-input-group nzPrefixIcon="anticon anticon-user">
+                            <input type="text" nz-input formControlName="userName" placeholder="请输入用户名">
+                        </nz-input-group>
+                        <nz-form-explain *ngIf="userdateForm.get('userName').dirty && userdateForm.get('userName').errors">
+                            <ng-container *ngIf="userdateForm.get('userName').hasError('required')">
+                                请填写用户名!
+                            </ng-container>
+                            <ng-container *ngIf="userdateForm.get('userName').hasError('maxlength')">
+                                用户名不得超过6个字符!
+                            </ng-container>
+                        </nz-form-explain>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-control>
+                        <nz-input-group nzPrefixIcon="anticon anticon-lock">
+                            <input type="password" nz-input formControlName="password" placeholder="请输入密码">
+                        </nz-input-group>
+                        <nz-form-explain *ngIf="userdateForm.get('password').dirty && userdateForm.get('password').errors">
+                            <ng-container *ngIf="userdateForm.get('password').hasError('required')">
+                                请填写密码!
+                            </ng-container>
+                            <ng-container *ngIf="userdateForm.get('password').hasError('pattern')">
+                                以字母开头、只能大小写字母、数字和_长度6-18位！
+                            </ng-container>
+                        </nz-form-explain>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-control>
+                        <a class="login-form-forgot" class="login-form-forgot">CA证书</a>
+                        <a class="login-forget-password">忘记密码?</a>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-control>
+                        <button nz-button class="login-form-button" [nzType]="'primary'">登录</button>
+                    </nz-form-control>
+                </nz-form-item>
+            </form>
+        </div>
+    </div>
+</div>！
