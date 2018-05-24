@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NgZorroAntdModule } from 'ng-zorro-antd';
-import { LoginComponent } from './../components/auto/login/login.component';
 
 @NgModule({
     imports: [
@@ -17,10 +16,11 @@ import { LoginComponent } from './../components/auto/login/login.component';
         CommonModule,
         FormsModule,
         HttpClientModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        NgZorroAntdModule
     ],
     declarations: [
-        LoginComponent
+
     ],
     providers: [],
 })
