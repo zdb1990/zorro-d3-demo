@@ -19,7 +19,8 @@
         "prefix": "app",
         "styles": [
             "./assets/styles/style.scss",
-            "../node_modules/ng-zorro-antd/src/ng-zorro-antd.less"
+            "../node_modules/ng-zorro-antd/src/ng-zorro-antd.less",
+            "./assets/iconfont/iconfont.css"
         ],
         "scripts": [],
         "environmentSource": "environments/environment.ts",

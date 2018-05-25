@@ -3,4 +3,78 @@
     .home-page {
         height: $Height;
     }
+    .layout-view {
+        height: $Height;
+    }
+    .ant-layout-header {
+        background: $bgColor;
+    }
+    .ant-layout-sider-children {
+        background: #2d2f33;
+    }
+    .logo {
+        height: 35px;
+        background: #2d2f33;
+        margin: 16px;
+        img {
+            width: 100%;
+            height: 35px;
+        }
+    }
+    .ant-layout-footer {
+        background: #353535;
+    }
+    .ant-menu,
+    .ant-menu-dark .ant-menu-inline .ant-menu-sub {
+        background-color: #2d2f33 !important;
+    }
+    .ant-menu-item-selected {
+        background-color: #bfbfbf !important;
+    }
+    .ant-menu-submenu-arrow:before {
+        background: -webkit-gradient(linear, left top, right top, from(#bfbfbf), to(#bfbfbf)) !important;
+        background: linear-gradient(to right, #bfbfbf, #bfbfbf) !important;
+    }
+    .ant-menu-submenu-arrow:after {
+        background: -webkit-gradient(linear, left top, right top, from(#bfbfbf), to(#bfbfbf)) !important;
+        background: linear-gradient(to right, #bfbfbf, #bfbfbf) !important;
+    }
+    .icon-shuju,
+    .icon-fuwuqi {
+        font-size: 14px;
+        margin-right: 10px;
+    }
+    .icon-zhongwen,
+    .icon-yingwen {
+        font-size: 25px;
+        vertical-align: middle;
+        margin-right: 5px;
+    }
+    .ant-dropdown-link {
+        // display: inline-block;
+        width: 150px !important;
+        color: #333;
+        font-size: 14px;
+    }
+    .language {
+        display: inline-block;
+        width: 40px;
+        font-size: 14px;
+    }
+    .switch-language {
+        color: #333 !important;
+        font-size: 12px !important;
+    }
+    .anticon-down {
+        margin-left: 5px;
+    }
+    .language-selection {
+        float: right;
+    }
+    .enlarge {
+        margin-left: 10px;
+        .icon-fangda {
+            font-size: 14px;
+        }
+    }
 }

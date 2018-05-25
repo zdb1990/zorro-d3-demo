@@ -1,7 +1,79 @@
 <div class="home-page">
-    <nz-layout>
-        <app-header></app-header>
-        <app-content></app-content>
-        <app-footer></app-footer>
+    <nz-layout class="layout-view">
+        <nz-sider>
+            <div class="logo">
+                <img src="../../../assets/images/logo.png">
+            </div>
+            <ul nz-menu [nzMode]="'inline'" nzTheme='dark' [nzInlineCollapsed]="isCollapsed">
+                <li nz-menu-item>
+                    <span title>
+            <i class="anticon anticon-home"></i>
+            <span>总览</span>
+                    </span>
+                </li>
+                <li nz-submenu>
+                    <span title>
+            <i class="icon iconfont icon-shuju"></i>
+            <span>数据中心池</span>
+                    </span>
+                    <ul>
+                        <li nz-submenu>
+                            <span title>
+                <i class="icon iconfont icon-fuwuqi"></i>test1</span>
+                            <ul>
+                                <li nz-menu-item>Server_93</li>
+                                <li nz-menu-item>Server_94</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li nz-submenu>
+                    <span title>
+            <i class="anticon anticon-appstore"></i>
+            <span>镜像服务</span>
+                    </span>
+                    <ul>
+                        <li nz-submenu>
+                            <span title>ImageService</span>
+                        </li>
+                    </ul>
+                </li>
+
+            </ul>
+        </nz-sider>
+        <nz-layout>
+            <nz-header>
+
+                <div class="header-box">
+                    <div class="language-selection">
+                        <nz-dropdown [nzTrigger]="'click'">
+                            <a nz-dropdown>
+                                <i class="icon iconfont icon-{{selectedValue.icon || 'zhongwen'}}"></i>
+                                <span class="language">{{selectedValue.name || 'China'}}</span>
+                                <i class="anticon anticon-down"></i>
+                            </a>
+                            <ul nz-menu nzSelectable>
+                                <li nz-menu-item *ngFor="let item of items" (click)="selectChange(item)">
+                                    <a class="switch-language">
+                                        <i class="icon iconfont icon-{{item?.icon}}" style="vertical-align: middle"></i>
+                                        <span class="language">{{item.name}}</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nz-dropdown>
+
+                        <span class="enlarge">
+              <i class="icon iconfont icon-fangda"></i>
+            </span>
+
+                    </div>
+
+                </div>
+            </nz-header>
+            <nz-content>
+                <router-outlet></router-outlet>
+            </nz-content>
+            <nz-footer>Footer</nz-footer>
+        </nz-layout>
     </nz-layout>
 </div>
