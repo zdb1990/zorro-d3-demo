@@ -5,7 +5,7 @@
                 <img src="../../../assets/images/logo.png">
             </div>
             <ul nz-menu [nzMode]="'inline'" nzTheme='dark' [nzInlineCollapsed]="isCollapsed">
-                <li nz-menu-item>
+                <li nz-menu-item [routerLink]="['/home/sign-out']">
                     <span title>
             <i class="anticon anticon-home"></i>
             <span>总览</span>
@@ -63,8 +63,14 @@
                         </nz-dropdown>
 
                         <span class="enlarge">
-              <i class="icon iconfont icon-fangda"></i>
+              <i class="icon iconfont icon-fangda" (click)="screenAll()"></i>
+
+              <i class="icon iconfont icon-tuichu" (click)="signOut()"></i>
+
             </span>
+                        <div class="auto">
+                            <img src="../../../assets/images/avatars/sunny.png">
+                        </div>
 
                     </div>
 
@@ -73,7 +79,10 @@
             <nz-content>
                 <router-outlet></router-outlet>
             </nz-content>
-            <nz-footer>Footer</nz-footer>
+            <nz-footer>
+                <div class="footer-text">北京优炫软件股份有限公司</div>
+
+            </nz-footer>
         </nz-layout>
     </nz-layout>
 </div>

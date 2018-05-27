@@ -1,0 +1,29 @@
+<div class="sign-out-page">
+    <div nz-row class="sign-out-view">
+        <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="24" nzXl="8" nzXXl="8">
+            <nz-list [nzDataSource]="data" nzBordered [nzRenderItem]="item" [nzLoading]="loading">
+                <ng-template #item let-item>
+                    <nz-list-item [nzActions]="[describe]">
+                        <ng-template #describe>
+                            <span *ngIf="item.name!='状态'">{{item.value}}</span>
+                            <span *ngIf="item.name=='状态'" class="active">{{item.value}}</span>
+
+                        </ng-template>
+                        <nz-list-item-meta [nzTitle]="nzTitle">
+                            <ng-template #nzTitle>
+                                <span>{{item.name}}</span>
+                            </ng-template>
+                        </nz-list-item-meta>
+                    </nz-list-item>
+                </ng-template>
+
+            </nz-list>
+
+        </div>
+        <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="24" nzXl="16" nzXXl="16">
+
+            Col1
+        </div>
+    </div>
+
+</div>

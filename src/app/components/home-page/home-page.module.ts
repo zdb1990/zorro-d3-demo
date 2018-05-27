@@ -2,7 +2,6 @@ import { HomePageRoutingModule, routedComponents } from './home-page-routing.mod
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
 
-
 @NgModule({
     imports: [
         SharedModule,
@@ -11,7 +10,6 @@ import { SharedModule } from '../../shared/shared.module';
     exports: [],
     declarations: [
         ...routedComponents,
-
     ],
     providers: [],
 })

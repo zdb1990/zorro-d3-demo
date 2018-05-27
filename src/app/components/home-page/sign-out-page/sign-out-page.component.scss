@@ -1,0 +1,31 @@
+@import "../../../../assets/styles/common";
+:host::ng-deep {
+    .sign-out-page .ant-list-item:hover {
+        background-color: #f9f9f9;
+        .ng-star-inserted {
+            color: #444e64;
+        }
+    }
+    .sign-out-page .ant-list {
+        background-color: #444e64;
+        font-size: 14px;
+    }
+    .sign-out-page .ng-star-inserted {
+        color: $bgColor;
+    }
+}
+
+.sign-out-page {
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.active {
+    display: inline-block;
+    width: 80px;
+    height: 30px;
+    background-color: #939393;
+    border-radius: 3px;
+    color: #ffffff;
+    line-height: 30px;
+}
