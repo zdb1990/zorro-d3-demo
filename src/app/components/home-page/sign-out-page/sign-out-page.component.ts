@@ -8,21 +8,6 @@ import { transition } from '@angular/animations';
 })
 export class SignOutPageComponent implements OnInit, AfterViewInit {
   loading: Boolean = false;
-
-  viewData: any = [
-    1.2, 2.3, 0.9, 1.5, 5.3, 3.2, 4.5, 0
-  ];
-  viewColor: any = [
-    'red',
-    'green',
-    'yellow',
-    'blue',
-    'black'
-  ];
-  ele: any;
-  linear: any;
-  ordinal: any;
-  axis: any;
   data = [
     { name: '名称', value: 'SERVER63' },
     { name: '描述', value: '服务器' },
@@ -32,48 +17,51 @@ export class SignOutPageComponent implements OnInit, AfterViewInit {
     { name: '状态', value: 'Active' },
     { name: '最后检查时间', value: '2018-05-13 19:27:32' }
   ];
+  ele: any;
+  svg: any;
+  g: any;
+  line_gennerator: any;
+  line: any;
+  viewData: any = [
+    2.4, 0.3, 4.5, 3, 6.5, 7.4, 0.1
+  ];
+  // distance: any = {
+  //   'magrin-left': 20,
+  //   'magrin-right': 20,
+  //   'magrin-top': 20,
+  //   'magrin-bottom': 20
+  // };
   constructor() { }
 
   ngOnInit() {
   }
   ngAfterViewInit() {
-    // 数组值与DOM元素值不相匹配时
-    //   let rectHeight = 25;
-    //   this.ele = d3.select('.view-body').select('svg').selectAll('rect');
-    //   this.ele.data(this.viewData).enter().append('rect').attr('x', 20).attr('y', ((d, i) => {
-    //     console.log(d, i);
-    //     return i * rectHeight;
-
-    //   })).attr('width', ((d) => {
-    //     console.log(d);
-    //     return d;
-    //   })).attr('height', rectHeight - 2).attr('fill', 'steelblue');
-    //   console.log(this.ele);
-
-    // 线性比例尺
-    const rectHeight = 25;
-    const max = d3.max(this.viewData);
-    const min = d3.min(this.viewData);
-    this.linear = d3.scaleLinear().domain([min, max]).range([0, 800]);
-    // console.log(d3);
-    this.ordinal = d3.scaleOrdinal().domain(this.viewData).range(this.viewColor);
-    // this.ele = d3.select('.view-body').select('svg');
-    this.axis = d3.axisLeft(this.linear);
-    console.log(this.axis);
-    this.ele = d3.select('.view-body').select('svg');
-    this.ele.selectAll('g').data(this.viewData).enter().append('g').attr('class', 'line-text').call(this.axis);
-    console.log(this.ele.selectAll('g'));
-    // this.axis = d3.axisLeft(this.linear);
-    // this.ele = d3.select('.view-body').select('svg').call(this.axis);
-    // this.axis = d3.axisBottom(this.viewData);
-    // this.ele.append('g');
-    // this.ele.selectAll('rect').data(this.viewData).enter().append('rect').attr('y', ((d, i) => {
-    //   return i * rectHeight;
-    // })).attr('width', ((d) => {
-    //   return this.linear(d);
-    // })).attr('height', rectHeight - 2).attr('fill', ((d, i) => {
-    //   return this.ordinal(i);
-    // }));
+    const Width = 890;
+    const Height = 356;
+    const Left = 50;
+    const Top = 30;
+    const Right = 30;
+    const Bottom = 20;
+    this.ele = d3.select('.view-body').append('svg');
+    this.svg = d3.select('svg');
+    this.svg.attr('width', Width).attr('height', Height);
+    this.svg.append('g').attr('class', 'line');
+    this.g = d3.select('.line');
+    this.g.attr('width', Width - Left - Right);
+    this.g.attr('Height', Height - Bottom - Top);
+    this.g.attr('transfrom', 'translate(' + Left + ',' + Top + ')');
+    const _X = d3.scaleLinear().domain([0, this.viewData.length - 1]).range([0, Width - Left - Right]);
+    const _Y = d3.scaleLinear().domain([0, d3.max(this.viewData)]).range([0, Height - Top - Bottom]);
+    this.line_gennerator = d3.line().x((d, i) => {
+      return i;
+    }).y((d) => {
+      return d;
+    });
+    // console.log(this.line_gennerator(this.viewData));
+    this.g.append('path');
+    d3.select('path').attr('class', 'path-line').attr('d', this.line_gennerator(this.viewData));
+    this.line = this.g.append('g');
+    // // console.log(this.svg)
   }
 
 }

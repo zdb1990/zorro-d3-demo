@@ -1,5 +1,9 @@
 @import "../../../../assets/styles/common";
 :host::ng-deep {
+    .sign-out-page {
+        padding: 20px;
+        box-sizing: border-box;
+    }
     .sign-out-page .ant-list-item:hover {
         background-color: #f9f9f9;
         .ng-star-inserted {
@@ -12,5 +16,13 @@
     }
     .sign-out-page .ng-star-inserted {
         color: $bgColor;
+    }
+    .view-body {
+        background: #f9f9f9;
+    }
+    .path-line {
+        fill: none;
+        stroke: #aba1a1;
+        stroke-width: 2;
     }
 }
