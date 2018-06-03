@@ -17,51 +17,94 @@ export class SignOutPageComponent implements OnInit, AfterViewInit {
     { name: '状态', value: 'Active' },
     { name: '最后检查时间', value: '2018-05-13 19:27:32' }
   ];
-  ele: any;
-  svg: any;
-  g: any;
-  line_gennerator: any;
-  line: any;
   viewData: any = [
-    2.4, 0.3, 4.5, 3, 6.5, 7.4, 0.1
+    2.4, 0.3, 4.5, 3, 6.5, 7.4, 0.8
   ];
-  // distance: any = {
-  //   'magrin-left': 20,
-  //   'magrin-right': 20,
-  //   'magrin-top': 20,
-  //   'magrin-bottom': 20
-  // };
+  yearData: any = [
+    30, 402, 130, 21, 3, 32
+  ];
+  ele: any;
+  gDom: any;
+  _X: any;
+  Chart: any;
+  Chartg: any;
+  ChartH: any;
   constructor() { }
 
   ngOnInit() {
   }
   ngAfterViewInit() {
-    const Width = 890;
-    const Height = 356;
-    const Left = 50;
-    const Top = 30;
-    const Right = 30;
-    const Bottom = 20;
-    this.ele = d3.select('.view-body').append('svg');
-    this.svg = d3.select('svg');
-    this.svg.attr('width', Width).attr('height', Height);
-    this.svg.append('g').attr('class', 'line');
-    this.g = d3.select('.line');
-    this.g.attr('width', Width - Left - Right);
-    this.g.attr('Height', Height - Bottom - Top);
-    this.g.attr('transfrom', 'translate(' + Left + ',' + Top + ')');
-    const _X = d3.scaleLinear().domain([0, this.viewData.length - 1]).range([0, Width - Left - Right]);
-    const _Y = d3.scaleLinear().domain([0, d3.max(this.viewData)]).range([0, Height - Top - Bottom]);
-    this.line_gennerator = d3.line().x((d, i) => {
-      return i;
-    }).y((d) => {
+    this.dataView();
+    this.StatisticsView();
+  }
+  dataView() {
+    const Width = 950;
+    const barHeight = 25;
+    this._X = d3.scaleLinear().domain([0, d3.max(this.viewData)]).range([0, Width]);
+    this.ele = d3.select('.view-body').append('svg').attr('width', Width).attr('height', this.viewData.length * barHeight);
+    this.gDom = this.ele.selectAll('g').data(this.viewData).enter().append('g').attr('transform', ((d, i) => {
+      return 'translate(0,' + i * barHeight + ')';
+    }));
+    this.gDom.append('rect').attr('width', ((d, i) => {
+      return this._X(d);
+    })).attr('height', barHeight - 2);
+    this.gDom.append('text').attr('x', ((d, i) => {
+      return this._X(d) - 20;
+    })).attr('y', barHeight / 2).text((d, i) => {
       return d;
-    });
-    // console.log(this.line_gennerator(this.viewData));
-    this.g.append('path');
-    d3.select('path').attr('class', 'path-line').attr('d', this.line_gennerator(this.viewData));
-    this.line = this.g.append('g');
-    // // console.log(this.svg)
+    }).attr('fill', '#fff').attr('dy', '.2rem');
+  }
+  StatisticsView() {
+
+    // const width = 1200;
+    // const height = 500;
+    // this.ChartH = d3.scaleLinear().domain([0, d3.max(this.yearData)]).range([height, 0]);
+    // this.Chart = d3.select('.Statistics-view').append('svg');
+    // this.Chart.attr('width', width).attr('height', height).attr('class', 'rectview');
+    // const barWidth = width / this.yearData.length;
+    // this.Chartg = this.Chart.selectAll('g')
+    //   .data(this.yearData)
+    //   .enter().append('g')
+    //   .attr('transform', ((d, i) => {
+    //     return 'translate(' + i * barWidth + ',0)';
+    //   }));
+
+    // this.Chartg.append('rect')
+    //   .attr('y', ((d) => {
+    //     return this.ChartH(d);
+    //   }))
+    //   .attr('height', ((d) => {
+    //     return height - this.ChartH(d);
+    //   })).attr('width', barWidth - 1);
+
+    // this.Chartg.append('text')
+    //   .attr('x', barWidth / 2)
+    //   .attr('y', ((d) => {
+    //     return this.ChartH(d) + 3;
+    //   }))
+    //   .attr('dy', '.75em')
+    //   .text((d) => {
+    //     return d;
+    //   });
+    const Width = 1200;
+    const Height = 500;
+    const barWidth = Width / this.yearData.length;
+    this.ChartH = d3.scaleLinear().domain([0, d3.max(this.yearData)]).range([Height, 0]);
+    this.Chart = d3.select('.Statistics-view').append('svg');
+    this.Chart.attr('width', Width).attr('height', Height).attr('class', 'rectview');
+    // console.log(this.Chart);
+    this.Chartg = this.Chart.selectAll('g').data(this.yearData).enter().append('g').attr(
+      'transform', ((d, i) => {
+        return 'translate(' + i * barWidth + ',0)';
+      })
+    );
+    this.Chartg.append('rect').attr('y', ((d, i) => {
+      return this.ChartH(d);
+    })).attr('width', barWidth - 2).attr('height', ((d, i) => {
+      //  console.log(d.value);
+      //  console.log(this.ChartH(d));
+      return Height - this.ChartH(d);
+    }));
   }
 
 }
