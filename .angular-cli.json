@@ -20,7 +20,9 @@
         "styles": [
             "./assets/styles/style.scss",
             "../node_modules/ng-zorro-antd/src/ng-zorro-antd.less",
-            "./assets/iconfont/iconfont.css"
+            "./assets/iconfont/iconfont.css",
+            "../node_modules/react-grid-layout/css/styles.css",
+            "../node_modules/react-resizable/css/styles.css"
         ],
         "scripts": [
             "../node_modules/d3/dist/d3.js",

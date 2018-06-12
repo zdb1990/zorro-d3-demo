@@ -1,0 +1,6 @@
+@import '../../../assets/styles/common';
+:host::ng-deep{
+  .drag{
+      height: $Height;
+  }
+}

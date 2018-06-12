@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { transition } from '@angular/animations';
+
 
 @Component({
   selector: 'app-sign-out-page',

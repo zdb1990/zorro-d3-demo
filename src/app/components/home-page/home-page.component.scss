@@ -9,11 +9,20 @@
     .ant-menu-item {
         outline: none;
     }
+    .ant-menu-submenu-inline{
+        outline: none;
+    }
+    .ant-layout-content{
+        height: $Height;
+    }
     .ant-layout-header {
         background: $bgColor;
     }
     .ant-layout-sider-children {
         background: #2d2f33;
+    }
+    .ng-star-inserted{
+        height: $Height;
     }
     .logo {
         height: 35px;
