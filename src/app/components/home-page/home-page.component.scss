@@ -9,11 +9,12 @@
     .ant-menu-item {
         outline: none;
     }
-    .ant-menu-submenu-inline{
+    .ant-menu-submenu-inline {
         outline: none;
     }
-    .ant-layout-content{
+    .ant-layout-content {
         height: $Height;
+        overflow: scroll;
     }
     .ant-layout-header {
         background: $bgColor;
@@ -21,7 +22,7 @@
     .ant-layout-sider-children {
         background: #2d2f33;
     }
-    .ng-star-inserted{
+    .ng-star-inserted {
         height: $Height;
     }
     .logo {

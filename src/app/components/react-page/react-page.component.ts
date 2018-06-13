@@ -9,17 +9,18 @@ import { GridsterConfig, GridsterItem } from 'angular-gridster2';
 })
 export class ReactPageComponent implements OnInit, AfterViewInit {
   options: any;
-  item: any = { cols: 6, rows: 5, y: 0, x: 0 };
+  item: any = { cols: 6, rows: 3, y: 0, x: 0 };
   chart: any = { cols: 2, rows: 1, y: 0, x: 2 };
-  svg: any;
-  g: any;
-  X: any;
-  Y: any;
-  area: any;
   // dashboard: any = [
   //   // {cols: 2, rows: 1, y: 0, x: 0}
   //   // {cols: 2, rows: 1, y: 0, x: 2}
   // ];
+  svg: any;
+  box: any;
+  _x: any;
+  _y: any;
+  line: any;
+  parseTime: any;
   constructor() { }
 
   ngOnInit() {
@@ -46,26 +47,107 @@ export class ReactPageComponent implements OnInit, AfterViewInit {
   }
   ngAfterViewInit() {
 
-    // d3.tsv('./../../../assets/svg/data.tsv', (d) => {
-    //   // console.log(d)
-    //   d.date = parseTime(d.date);
-    //   d.close = +d.close;
-    //   // console.log(d.date, d.close);
-    //   return d;
-    // }, (error, data) => {
-    //   // d3.extent - 计算数组中的最小值和最大值。
+
+    d3.tsv('../../../assets/svg/data.tsv', (d) => {
+      d.date = this.parseTime(d.date);
+      d.close = +d.close;
+      return d;
+    }, (data) => {
+      // if (error) throw error;
+      this.svg = d3.select('svg').attr('width', 650).attr('height', 320);
+      const margin = { top: 20, right: 20, bottom: 30, left: 50 };
+      const width = this.svg.attr('width') - margin.left - margin.right;
+      const height = this.svg.attr('height') - margin.top - margin.bottom;
+      this.box = this.svg.append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+      this.parseTime = d3.timeParse('%d-%b-%y');
+
+      this._x = d3.scaleTime()
+        .rangeRound([0, width]);
+
+      this._y = d3.scaleLinear()
+        .rangeRound([height, 0]);
+
+      this.line = d3.line()
+        .x((d) => {
+          return this._x(d.date);
+        })
+        .y((d) => {
+          return this._y(d.close);
+        });
+
+      this._x.domain(d3.extent(data, (d) => {
+        return d.date;
+      }));
+      this._y.domain(d3.extent(data, (d) => {
+        return d.close;
+      }));
+
+      this.box.append('g')
+        .attr('transform', 'translate(0,' + height + ')')
+        .call(d3.axisBottom(this._x))
+        .select('.domain')
+        .remove();
+
+      this.box.append('g')
+        .call(d3.axisLeft(this._y))
+        .append('text')
+        .attr('fill', '#000')
+        .attr('transform', 'rotate(-90)')
+        .attr('y', 6)
+        .attr('dy', '0.71em')
+        .attr('text-anchor', 'end')
+        .text('Price ($)');
+
+      this.box.append('path')
+        .datum(data)
+        .attr('fill', 'none')
+        .attr('stroke', 'steelblue')
+        .attr('stroke-linejoin', 'round')
+        .attr('stroke-linecap', 'round')
+        .attr('stroke-width', 1.5)
+        .attr('d', this.line);
+    });
+
+
+    // this.svg = d3.select('.chart').attr('width', 650).attr('height', 320);
+    // const margin = { left: 20, right: 30, top: 30, bottom: 20 };
+    // // console.log(this.svg.attr('width'));
+    // const width = this.svg.attr('width') - margin.left - margin.right;
+    // const height = this.svg.attr('height') - margin.top - margin.bottom;
+    // // 把日期转换成字符串
+    // const parseTime = d3.timeParse('%d-%b-%y');
+    // this.svg.append('g').attr('class', 'box');
+    // this.box = d3.select('.box');
+    // this.box.attr('transfrom', 'translate(' + margin.left + ',' + margin.top + ')');
+    // // 为时间创造线性比例 值域
+    // this._x = d3.scaleTime().rangeRound([0, width]);
+    // // 创建y轴的线性比例
+    // this._y = d3.scaleLinear().rangeRound(height, 0);
+    // // 创建线性比
+    // this.line = d3.line().x((d) => {
+    //   return this._x(d.date);
+    // }).y((d) => {
+    //   return this._y(d.close);
+    // });
+    // d3.tsv('../../../assets/svg/data.tsv', (data) => {
+    //   data.date = parseTime(data.date);
+    //   data.close = +data.close;
+    //   console.log(data);
+    //   // 定义域x extent计算数组中的最大值和最小值
     //   this._x.domain(d3.extent(data, (d) => {
-    //     console.log(d.date);
+    //     console.log(d);
     //     return d.date;
     //   }));
-    //   this._y.domain([0, d3.max(data), (d) => {
+    //   this._y.domain(d3.extent(data, (d) => {
+    //     console.log(d);
     //     return d.close;
-    //   }]);
-    //   this.area.y0(this._y(0));
-    //   // datum - 获取或设置元素数据（不加入）
-    //   this.g.append('path').datum(data).attr('fill', 'steelblue').attr('d', this.area);
-    //   this.g.append('g').attr('transform', 'translate(0,' + height + ')').call(d3.axisBottom(this._x);
-    //   this.g.append('g')
+    //   }));
+    //   // .call调用一次指定的function  ，axisBottom画一个朝下的轴
+    //   this.box.append('g')
+    //     .attr('transform', 'translate(0,' + height + ')').call(d3.axisBottom(this._x)).select('.domain')
+    //     .remove();
+    //   this.box.append('g')
     //     .call(d3.axisLeft(this._y))
     //     .append('text')
     //     .attr('fill', '#000')
@@ -74,7 +156,16 @@ export class ReactPageComponent implements OnInit, AfterViewInit {
     //     .attr('dy', '0.71em')
     //     .attr('text-anchor', 'end')
     //     .text('Price ($)');
-    // });
+    //   this.box.append('path')
+    //     .datum(data)
+    //     .attr('fill', 'none')
+    //     .attr('stroke', 'steelblue')
+    //     .attr('stroke-linejoin', 'round')
+    //     .attr('stroke-linecap', 'round')
+    //     .attr('stroke-width', 1.5)
+    //     .attr('d', this.line);
+
+    // })
+
   }
 }
-
