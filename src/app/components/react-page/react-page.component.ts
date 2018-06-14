@@ -9,21 +9,28 @@ import { GridsterConfig, GridsterItem } from 'angular-gridster2';
 })
 export class ReactPageComponent implements OnInit, AfterViewInit {
   options: any;
-  item: any = { cols: 6, rows: 3, y: 0, x: 0 };
-  chart: any = { cols: 2, rows: 1, y: 0, x: 2 };
+  item: any = { cols: 6, rows: 4, y: 0, x: 0 };
+  chart: any = { cols: 6, rows: 4, y: 0, x: 6 };
   // dashboard: any = [
   //   // {cols: 2, rows: 1, y: 0, x: 0}
   //   // {cols: 2, rows: 1, y: 0, x: 2}
   // ];
+  Earr: any = [
+    'A', 'B', 'C', 'D', 'E'
+  ];
   svg: any;
   box: any;
-  _x: any;
+  react: any;
+  g: any;
+  arr: any = [
+    1.2, 3, 4.5, 3.1, 5.6
+  ];
   _y: any;
-  line: any;
-  parseTime: any;
-  area: any;
-  content: any;
-  newdata: any = [];
+  axis_X: any;
+  _x: any;
+  axis_Y: any;
+  _y1: any;
+  circle: any;
   constructor() { }
 
   ngOnInit() {
@@ -49,121 +56,62 @@ export class ReactPageComponent implements OnInit, AfterViewInit {
     };
   }
   ngAfterViewInit() {
-    this.svg = d3.select('svg').attr('width', 650).attr('height', 320);
-    this.svg = d3.select('svg');
-    const margin = { top: 20, right: 20, bottom: 30, left: 50 };
-    const width = this.svg.attr('width') - margin.left - margin.right;
-    const height = this.svg.attr('height') - margin.top - margin.bottom;
-    this.box = this.svg.append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')').attr('class', 'box');
-    this.content = d3.select('.box');
-    this.parseTime = d3.timeParse('%d-%b-%y');
+    // 获取宽
 
-    this._x = d3.scaleTime()
-      .rangeRound([0, width]);
+    const margin = { left: 30, right: 20, top: 20, bottom: 30 };
+    const Width = 650;
+    const Height = 320;
+    const W = Width - margin.left - margin.right;
+    const H = Height - margin.top - margin.bottom;
+    const BarWidth = W / this.arr.length;
+    this.svg = d3.select('.chart').attr('width', Width + margin.left + margin.right).attr('height', Height + margin.top + margin.bottom);
+    // 添加一个容器
+    this.box = this.svg.append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+    // 添加y轴的线性比例生成
+    this._y = d3.scaleLinear().domain([0, d3.max(this.arr)]).range([Height, 0]);
 
-    this._y = d3.scaleLinear()
-      .rangeRound([height, 0]);
-
-    this.area = d3.area()
-      .x((d) => {
-        return this._x(d.date);
-      })
-      .y1((d) => {
-         return this._y(d.close);
-       });
-
-    d3.tsv('../../../assets/svg/data.tsv', (d) => {
-      d.date = this.parseTime(d.date);
-      d.close = +d.close;
-      this.newdata.push(d);
-      return this.newdata;
+    this._y1 = d3.scaleLinear().domain([0, this.arr.length]).range([Height, 0]);
+    // 计算出x轴生成的坐标比例
+    this._x = d3.scaleBand()
+      .domain(this.Earr)
+      .range([0, W]);
+    // 创建y轴生成
+    // this.axis_Y=d3.scaleLiner()
+    // 创建一个朝下的轴
+    this.axis_X = d3.axisBottom().scale(this._x);
+    this.axis_Y = d3.axisLeft().scale(this._y1);
+    // 生成矩形
+    this.g = this.box.selectAll('g').data(this.arr).enter().append('g');
+    // 矩形的宽是固定的偏移量也是固定的
+    this.g.attr('transform', (d, i) => {
+      return 'translate(' + i * BarWidth + ',' + 0 + ')';
     });
-      // if (error) throw error;
-      console.log(this.newdata);
-    //   this._x.domain(d3.extent(data,  (d) => {
-    //     console.log(d);
-    //      return d.date;
-    //   });
-    //   this._y.domain([0, d3.max(data, (d) => {
-    //      return d.close;
-    //  })]);
-    //  this.area.y0(this._y(0));
+    this.g.append('rect').attr('width', BarWidth - 2).attr('y', (d) => {
+      return this._y(d);
+    }).attr('height', (d) => {
+      return (Height) - this._y(d);
+    }).attr('fill', 'red');
+    this.g.append('text').text((d) => {
+      return d;
+    }).attr('x', (BarWidth - 2) / 2).attr('text-anchor', 'middle').attr('y', (d) => {
+      return this._y(d);
+    }).attr('dy', '1rem');
+    // console.log(this.axis);
+    this.box.append('g').call(this.axis_X).attr('transform', 'translate(' + 0 + ',' + Height + ')');
+    this.box.append('g').call(this.axis_Y);
 
-    //   this.content.append('path')
-    //     .datum(data)
-    //     .attr('fill', 'steelblue')
-    //     .attr('d', this.area);
 
-      // this.box.append('g')
-      //   .attr('transform', 'translate(0,' + height + ')')
-      //   .call(d3.axisBottom(this._x));
 
-      // this.box.append('g')
-      //   .call(d3.axisLeft(this._y))
-      //   .append('text')
-      //   .attr('fill', '#000')
-      //   .attr('transform', 'rotate(-90)')
-      //   .attr('y', 6)
-      //   .attr('dy', '0.71em')
-      //   .attr('text-anchor', 'end')
-      //   .text('Price ($)');
 
-    // this.svg = d3.select('.chart').attr('width', 650).attr('height', 320);
-    // const margin = { left: 20, right: 30, top: 30, bottom: 20 };
-    // // console.log(this.svg.attr('width'));
-    // const width = this.svg.attr('width') - margin.left - margin.right;
-    // const height = this.svg.attr('height') - margin.top - margin.bottom;
-    // // 把日期转换成字符串
-    // const parseTime = d3.timeParse('%d-%b-%y');
-    // this.svg.append('g').attr('class', 'box');
-    // this.box = d3.select('.box');
-    // this.box.attr('transfrom', 'translate(' + margin.left + ',' + margin.top + ')');
-    // // 为时间创造线性比例 值域
-    // this._x = d3.scaleTime().rangeRound([0, width]);
-    // // 创建y轴的线性比例
-    // this._y = d3.scaleLinear().rangeRound(height, 0);
-    // // 创建线性比
-    // this.line = d3.line().x((d) => {
-    //   return this._x(d.date);
-    // }).y((d) => {
-    //   return this._y(d.close);
-    // });
-    // d3.tsv('../../../assets/svg/data.tsv', (data) => {
-    //   data.date = parseTime(data.date);
-    //   data.close = +data.close;
-    //   console.log(data);
-    //   // 定义域x extent计算数组中的最大值和最小值
-    //   this._x.domain(d3.extent(data, (d) => {
-    //     console.log(d);
-    //     return d.date;
-    //   }));
-    //   this._y.domain(d3.extent(data, (d) => {
-    //     console.log(d);
-    //     return d.close;
-    //   }));
-    //   // .call调用一次指定的function  ，axisBottom画一个朝下的轴
-    //   this.box.append('g')
-    //     .attr('transform', 'translate(0,' + height + ')').call(d3.axisBottom(this._x)).select('.domain')
-    //     .remove();
-    //   this.box.append('g')
-    //     .call(d3.axisLeft(this._y))
-    //     .append('text')
-    //     .attr('fill', '#000')
-    //     .attr('transform', 'rotate(-90)')
-    //     .attr('y', 6)
-    //     .attr('dy', '0.71em')
-    //     .attr('text-anchor', 'end')
-    //     .text('Price ($)');
-    //   this.box.append('path')
-    //     .datum(data)
-    //     .attr('fill', 'none')
-    //     .attr('stroke', 'steelblue')
-    //     .attr('stroke-linejoin', 'round')
-    //     .attr('stroke-linecap', 'round')
-    //     .attr('stroke-width', 1.5)
-    //     .attr('d', this.line);
 
-    // })
 
+
+
+
+    // 添加圆
+    this.circle = d3.select('.cricle').attr('width', Width).attr('height', Height);
+    this.circle.append('circle').attr('r', 150).attr('cx', Width / 2).attr('cy', Height / 2);
   }
 }
+
+
