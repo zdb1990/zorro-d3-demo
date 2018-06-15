@@ -10,7 +10,8 @@ import { GridsterConfig, GridsterItem } from 'angular-gridster2';
 export class ReactPageComponent implements OnInit, AfterViewInit {
   options: any;
   item: any = { cols: 6, rows: 4, y: 0, x: 0 };
-  chart: any = { cols: 6, rows: 4, y: 0, x: 6 };
+  chart: any = { cols: 6, rows: 5, y: 0, x: 6 };
+  map: any = { cols: 6, rows: 5, y: 0, x: 6 };
   // dashboard: any = [
   //   // {cols: 2, rows: 1, y: 0, x: 0}
   //   // {cols: 2, rows: 1, y: 0, x: 2}
@@ -31,6 +32,11 @@ export class ReactPageComponent implements OnInit, AfterViewInit {
   axis_Y: any;
   _y1: any;
   circle: any;
+  bar: any;
+  Arc: any;
+  angle: any;
+  data: any;
+  color: any;
   constructor() { }
 
   ngOnInit() {
@@ -56,6 +62,12 @@ export class ReactPageComponent implements OnInit, AfterViewInit {
     };
   }
   ngAfterViewInit() {
+    this.creatRect();
+    this.CreateArc();
+    this.CreateLine();
+  }
+  // 创建柱状图
+  creatRect() {
     // 获取宽
 
     const margin = { left: 30, right: 20, top: 20, bottom: 30 };
@@ -100,18 +112,50 @@ export class ReactPageComponent implements OnInit, AfterViewInit {
     this.box.append('g').call(this.axis_X).attr('transform', 'translate(' + 0 + ',' + Height + ')');
     this.box.append('g').call(this.axis_Y);
 
-
-
-
-
-
-
-
-
-    // 添加圆
-    this.circle = d3.select('.cricle').attr('width', Width).attr('height', Height);
-    this.circle.append('circle').attr('r', 150).attr('cx', Width / 2).attr('cy', Height / 2);
   }
+  // 创建饼状图
+  CreateArc() {
+    const width = 500;
+    const height = 400;
+    this.data = [
+      { education: '大专及以上', population: 11964 },
+      { education: '高中及中专', population: 18799 },
+      { education: '初中', population: 51966 },
+      { education: '小学', population: 35876 },
+      { education: '文盲人口', population: 5466 }
+    ];
+    this.circle = d3.select('.cricle').append('svg').attr('width', width).attr('height', height);
+    this.bar = this.circle.append('g').attr('transform', 'translate(250,200)');
+    // 内部的半径 和外部的半径是不同的  //起始的角度和结束的角度不能写死；
+    this.Arc = d3.arc().innerRadius(50).outerRadius(150);
+
+    // d3.layout.pie()计算出起始弧度和结束弧度 使用value传进数据生成对应的弧度
+    this.angle = d3.pie().value((d, i) => {
+      return d.population;
+    });
+    // 添加颜色schemeCategory10();
+    this.color = d3.scaleOrdinal(d3.schemeCategory10);
+    //  通过this.angle方法将数据传入进去计算出弧度添加path设定添加孤行
+    this.bar.selectAll('path').data(this.angle(this.data)).enter().append('path').attr('d', this.Arc).style('fill', (d, i) => {
+      return this.color(i);
+    });
+    console.log(this.angle(this.data));
+    // 添加文字
+    this.bar.selectAll('text').data(this.angle(this.data)).enter().append('text').text((d) => {
+      console.log(d);
+      return d.data.education;
+      // 使用src.centroid(d.value)来找到每个弧度的中心
+    }).attr('transform', (d) => {
+      return 'translate(' + this.Arc.centroid(d) + ')';
+    }).attr('text-anchor', 'middle');
+
+    // console.log(this.color(1));
+  }
+  // 创建曲线图
+  CreateLine() {
+
+  }
+
 }
 
 
