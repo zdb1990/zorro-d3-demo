@@ -11,7 +11,7 @@ export class ReactPageComponent implements OnInit, AfterViewInit {
   options: any;
   item: any = { cols: 6, rows: 4, y: 0, x: 0 };
   chart: any = { cols: 6, rows: 5, y: 0, x: 6 };
-  map: any = { cols: 6, rows: 5, y: 0, x: 6 };
+  map: any = { cols: 6, rows: 4, y: 0, x: 6 };
   // dashboard: any = [
   //   // {cols: 2, rows: 1, y: 0, x: 0}
   //   // {cols: 2, rows: 1, y: 0, x: 2}
@@ -37,6 +37,9 @@ export class ReactPageComponent implements OnInit, AfterViewInit {
   angle: any;
   data: any;
   color: any;
+  line: any;
+  linebar: any;
+  line_y: any;
   constructor() { }
 
   ngOnInit() {
@@ -153,7 +156,13 @@ export class ReactPageComponent implements OnInit, AfterViewInit {
   }
   // 创建曲线图
   CreateLine() {
-
+    const width = 600;
+    const height = 400;
+    const margin = { left: 50, top: 30, right: 20, bottom: 10 };
+    const W = width - margin.left - margin.right;
+    const H = height - margin.top - margin.bottom;
+    this.line = d3.select('.line').append('svg').attr('width', width).attr('height', height);
+    this.linebar = this.line.append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
   }
 
 }
